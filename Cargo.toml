@@ -1,9 +1,46 @@
 [package]
-name = "hearlib"
+name = "hear"
 version = "0.1.0"
 authors = ["Chris Overcash <covercash2@gmail.com>"]
 edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+jni = { version = "0.18", default-features = false }
+log = "0.4"
+
+[dependencies.oboe]
+version = "0.3.1"
+features = ["java-interface"]
+
+[dependencies.ndk-glue]
+version = "0.2.0"
+features = ["logger"]
+
+[dependencies.android_logger]
+version = "0.8"
+
+[package.metadata.android]
+package_name = "dev.covercash.libhear"
+android_version = 28
+target_sdk_version = 28
+min_sdk_version = 16
+build_targets = [ "armv7-linux-androideabi", "aarch64-linux-android", "i686-linux-android", "x86_64-linux-android" ]
+
+[[package.metadata.android.feature]]
+name = "android.hardware.audio.output"
+required = false
+
+[[package.metadata.android.feature]]
+name = "android.hardware.microphone"
+required = false
+
+[[package.metadata.android.feature]]
+name = "android.hardware.audio.low_latency"
+required = false
+
+[profile.release]
+lto = true
+
+[lib]
+name = "hear"
+crate-type = ["cdylib"]
