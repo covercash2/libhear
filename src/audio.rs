@@ -7,7 +7,7 @@ use oboe::{
     DataCallbackResult, Mono, PerformanceMode, SharingMode,
 };
 
-pub fn start_stream() {
+pub fn create_playback_stream() {
     let mut sine = AudioStreamBuilder::default()
         // select desired performance mode
         .set_performance_mode(PerformanceMode::LowLatency)
