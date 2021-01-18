@@ -1,17 +1,28 @@
 #![cfg(target_os = "android")]
 #![allow(non_snake_case)]
 
+use log::*;
+
 use jni::{
-    objects::{JClass, JObject, JString},
+    objects::{JClass, JString},
     sys::jstring,
     JNIEnv,
 };
 
-mod audio;
+//mod audio;
+//mod mycpal;
+mod myoboe;
+
+#[ndk_glue::main(backtrace = "on", logger(level = "debug", tag = "libhear"))]
+fn main() {
+    info!("run main");
+    //mycpal::init().expect("unable to run audio")
+    myoboe::create_playback_stream()
+}
 
 // no mangle preserves the function name so that JNI/NDK can see it
 #[no_mangle]
-pub unsafe extern "C" fn Java_dev_covercash_hearlib_Hear_hello(
+pub extern "C" fn Java_dev_covercash_hearlib_Hear_hello(
     env: JNIEnv,
     _: JClass,
     input: JString,
@@ -28,8 +39,25 @@ pub unsafe extern "C" fn Java_dev_covercash_hearlib_Hear_hello(
 }
 
 // #[no_mangle]
-// pub unsafe extern fn Java_dev_covercash_hearlib_Hear_playTest(_: JNIEnv, _: JObject) {
-//     audio::create_playback_stream()
+// pub extern "C" fn __cxa_pure_virtual() {
+//     error!("unexpected C++ runtime error");
+//     loop {}
+// }
+
+// // GNU C++ personality routine, Version 0.                                      
+// #[no_mangle]
+// extern "C" fn  __gxx_personality_v0() -> usize {
+//     return 127;
+// }
+
+// #[no_mangle]
+// pub extern "system" fn Java_dev_covercash_hearlib_Hear_playTest(
+//     _: JNIEnv,
+//     _: JClass,
+// ) -> jstring {
+//     audio::create_playback_stream();
+
+//     todo!()
 // }
 
 #[cfg(test)]

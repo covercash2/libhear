@@ -4,43 +4,42 @@ version = "0.1.0"
 authors = ["Chris Overcash <covercash2@gmail.com>"]
 edition = "2018"
 
-[dependencies]
-jni = { version = "0.18", default-features = false }
-log = "0.4"
-
-[dependencies.oboe]
-version = "0.3.1"
-features = ["java-interface"]
-
-[dependencies.ndk-glue]
-version = "0.2.0"
-features = ["logger"]
-
-[dependencies.android_logger]
-version = "0.8"
-
-[package.metadata.android]
-package_name = "dev.covercash.libhear"
-android_version = 28
-target_sdk_version = 28
-min_sdk_version = 16
-build_targets = [ "armv7-linux-androideabi", "aarch64-linux-android", "i686-linux-android", "x86_64-linux-android" ]
-
-[[package.metadata.android.feature]]
-name = "android.hardware.audio.output"
-required = false
-
-[[package.metadata.android.feature]]
-name = "android.hardware.microphone"
-required = false
-
-[[package.metadata.android.feature]]
-name = "android.hardware.audio.low_latency"
-required = false
+[lib]
+name = "hear"
+crate-type = ["lib", "cdylib"]
 
 [profile.release]
 lto = true
 
-[lib]
-name = "hear"
-crate-type = ["cdylib"]
+[dependencies]
+log = "0.4"
+# Cross Platform Audio Library
+#cpal = "0.13.1"
+# error handling
+anyhow = "1.0.12"
+
+[target.'cfg(target_os = "android")'.dependencies]
+oboe = "0.4"
+android_logger = "0.9.2"
+ndk-glue = { version = "0.2.1", features = ["logger"] }
+ndk = "0.2.1"
+jni = "0.18"
+
+# [package.metadata.android]
+# android_version = 28
+# target_sdk_version = 28
+# min_sdk_version = 16
+# build_targets = [ "armv7-linux-androideabi", "aarch64-linux-android", "i686-linux-android", "x86_64-linux-android" ]
+# #build_targets = ["aarch64-linux-android"]
+# #build_targets = ["armv7-linux-androideabi"]
+# #build_targets = ["i686-linux-android"]
+# #build_targets = ["x86_64-linux-android"]
+# package_name = "org.illumium.rust-oboe-demo"
+# label = "Android oboe demo"
+# version_code = 100
+# version_name = "0.1.2"
+# #res = "res"
+# #icon = "@mipmap/ic_launcher"
+# fullscreen = false
+# opengles_version_major = 2
+# opengles_version_minor = 0
